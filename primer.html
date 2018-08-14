@@ -1,0 +1,89 @@
+<html>
+
+<canvas id = "gc" width = "640" height = "420"></canvas>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+
+pt = 10;
+ph = 100;
+bx = by =50;
+bd= 6;
+xv = 4;
+yv =0;
+ps =30;
+score1 = score2 = 0;
+window.onload=function() {
+	c=document.getElementById('gc');
+	p1y = c.height/2 - ph/2;
+ 	p2y = c.height/2 - ph/2;
+	bx = c.width/2;
+	by = c.height / 2;
+	cc= c.getContext('2d');
+	setInterval(update, 1000/30);
+	c.addEventListener('mousemove' , function(e) {
+		if(e.clientY-ph/2 < 0) { p1y = 0; }
+		else if (e.clientY-ph/2 > c.height - ph) { p1y = c.height -ph;} 
+		else {p1y = e.clientY-ph/2;}
+	});
+}
+
+function reset(){
+	bx = c.width/2;
+	by = c.height/2;
+	xv = -xv;
+	yv = 3;
+}
+
+function update() {
+
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', p1y, true);
+	xhr.send();
+	xhr.addEventListener("readystatechange", processRequest, false);
+	function processRequest(e){
+		if(xhr.readyState == 4) {
+			var response = xhr.responseText;
+			alert(response);
+		}
+	}
+	bx += xv;
+	by += yv;
+	if (by - bd < 0 && yv < 0){
+		yv = -yv;
+	}
+	if (by + bd > c.height && yv > 0){
+		yv = -yv;
+	}
+	if (bx < pt + bd) {
+		if(by > p1y && by < p1y + ph){
+			xv = xv*(-1);
+		} else {
+			score2++;
+			reset();
+		}
+	}
+
+	if(bx > c.width-pt -bd) {
+		if(by > p2y && by < p2y +ph) {
+			xv = xv * (-1);
+			bx = bx;
+		} else {
+			score2++;
+			reset();
+		}
+	}
+	
+	cc.fillStyle = 'black';
+	cc.fillRect(0,0,c.width, c.height);
+	cc.fillStyle = 'white';
+	cc.fillRect(0,p1y, pt, ph);
+ 	cc.fillRect(c.width-pt, p2y, pt, ph);
+	cc.fillRect(bx-bd/2, by-bd/2, bd, bd);
+	cc.fillText(score2, c.width/2, 100, 100);
+}
+</script>
+
+</html>
