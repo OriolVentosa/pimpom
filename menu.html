@@ -1,0 +1,37 @@
+<html>
+
+<body>
+
+<canvas id = "menu" width = "640" height = "420"> </canvas>
+
+</body>
+
+<script>
+
+window.onload = function() {
+	c = document.getElementById('menu');
+
+	op1h = c.height / 4;
+	op2h = c.height / 2;
+	op3h = c.height * 3 / 4;
+
+	opw = c.width / 2;
+
+	cc = c.getContext('2d');
+	
+	cc.fillStyle = 'black';
+	cc.fillRect(0,0,c.width,c.height);
+	cc.fillStyle = 'white';
+	cc.fillRect(opw-15, op1h-5, 30, 10);
+	cc.fillRect(opw-15,op2h-5, 30, 10);
+	cc.fillRect(opw-15,op3h-5, 30, 10);
+	
+	c.addEventListener('click', function(e){
+		if(e.clientX>opw-15 && e.clientX<opw+15 && e.clientY > op1h-5 && e.clientY < op1h+5) { alert('opcio 1');}
+		else{'no encertat';}
+	});	
+	}
+
+</script>
+
+</html>
