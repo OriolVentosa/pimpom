@@ -18,6 +18,9 @@
 
 <script>
 
+
+var theme = {back: 'black', rect: 'white', hov: 'blue' ,font: 'red'}
+
 window.onload = inici();
 
 function inici() {
@@ -29,10 +32,9 @@ function inici() {
 	op1h = c.height / 4;
 	op2h = c.height / 2;
 	op3h = c.height * 3 / 4;
-	var ops = [op1h, op2h, op3h];
-	var qin = 0;
-	var theme = {back: 'black', rect: 'white', hov: 'blue' ,font: 'red'}
-
+	
+        var ops = [op1h, op2h, op3h];
+        var qin = 0;
 	opw = c.width / 2;
 
 	cc = c.getContext('2d');
@@ -51,6 +53,7 @@ function inici() {
 
 	c.addEventListener('click', alclick, false);
 	c.addEventListener('mousemove', psobre, false);
+
 	function psobre(event){
 		if(qin == 0){
 		var cx = event.clientX;
@@ -92,9 +95,13 @@ function inici() {
                 }
                 console.log(qin);
 		if(qin== 1){
+			c.removeEventListener('mousemove', psobre, false);
+			c.removeEventListener('click', alclick, false);
 			pimpom();
 		}
 		if(qin==2){
+			c.removeEventListener('mousemove', psobre, false);
+			c.removeEventListener('click', alclick, false);
 			opcions();
 		}
 	}
@@ -137,6 +144,7 @@ function inici() {
         xv = -xv;
         yv = 3;
 	}
+
 	function update() {
         bx += xv;
        	by += yv;
@@ -189,27 +197,48 @@ function inici() {
 	boxes[1].h = 50;
 	
 	boxes[2] = {x: 0,y: 0,w: 0,h: 0};
-	boxes[2].x = c.width * 2;
-	boxes[2].y = c.height *2/3;
+	boxes[2].x = c.width*2;
+	boxes[2].y = c.height*2/3;
 	boxes[2].w = 100;
 	boxes[2].h = 50;
 
 	cc.fillStyle = theme.back;
 	cc.fillRect(0,0,c.width,c.height);
+
 	cc.fillStyle = theme.rect;
+	console.log(boxes[2].x +' '+  boxes[2].y);
 	for(var i = 0; i < boxes.length ; i++)
 	{
 		fillRectCentered(cc, boxes[i].x, boxes[i].y, boxes[i].w, boxes[i].h);
 	}
 	
-	c.addEventListener('mousemove', )
+	c.addEventListener('mousemove', function(e) {
+        
+	var cx = event.clientX;
+        var cy = event.clientY;
+        var pfin;
+        for(var i = 0; i < boxes.length; i++){
+		pfin = drect(cx, cy, boxes[i].x, boxes[i].y, boxes[i].w, boxes[i].h);
+		if(pfin == true) {
+			cc.fillStyle = theme.hov;
+                        fillRectCentered(cc, boxes[i].x, boxes[i].y,boxes[i].w, boxes[i].h);
+                }
+                else{
+                        cc.fillStyle = theme.rect;
+       	                cc.fillRect(cc, boxes[i].x , boxes[i].y, boxes[i].w, boxes[i].h);
+                }
+                        
+                cc.fillStyle = theme.font;
+                cc.fillText("Visual", boxes[1].x, boxes[1].y);
+                cc.fillText("So", boxes[2].x, boxes[2].y);
+                }
+        },false);
 	}
 
 	function fillRectCentered(context, x, y, width, height) {
 	context.fillStyle = theme.rect;
 	context.fillRect(x - width / 2, y - height / 2, width, height);
 	}
-
 }
 
 </script>
